@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>加班費試算工具</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    select, input[type="number"], button {
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      max-width: 300px;
+    }
+    h2 {
+      text-align: center;
+    }
+    #warning {
+      color: red;
+      font-size: 16px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>加班費試算工具</h2>
+
+  <label for="salary">月薪:</label>
+  <select id="salary">
+    <option value="28590">28590</option>
+    <option value="29000">29000</option>
+    <option value="30000">30000</option>
+    <option value="31000">31000</option>
+    <option value="32000">32000</option>
+    <option value="33000">33000</option>
+    <option value="34000">34000</option>
+    <option value="35000">35000</option>
+    <option value="36000">36000</option>
+    <option value="37000">37000</option>
+  </select>
+
+  <label for="shift">班別:</label>
+  <select id="shift">
+    <option value="0">無</option>
+    <option value="2000">中班(+2000)</option>
+    <option value="1000">排班制(+1000)</option>
+    <option value="3000">中班且排班制(+3000)</option>
+  </select>
+
+  <label for="overtimeRate">選擇加班時段:</label>
+  <select id="overtimeRate">
+    <option value="1.34">週一到週五 18:00~20:00 (1.34倍)</option>
+    <option value="1.67">週一到週五 20:00以後 (1.67倍)</option>
+    <option value="1.34">週六 9:00~11:00 (1.34倍)</option>
+    <option value="1.67">週六 11:00~18:00 (1.67倍)</option>
+    <option value="2.67">週六 18:00以後 (2.67倍)</option>
+  </select>
+
+  <button onclick="calculateOvertimePay()">計算加班費</button>
+
+  <h3>計算結果:</h3>
+  <p id="result">加班費將顯示在此處。</p>
+
+  <p id="warning">請使用部分工時人員</p>
+
+  <script>
+    function calculateOvertimePay() {
+      let salary = parseFloat(document.getElementById('salary').value);
+      let shiftAllowance = parseFloat(document.getElementById('shift').value);
+      let overtimeRate = parseFloat(document.getElementById('overtimeRate').value);
+
+      // 計算加班費
+      let totalSalary = salary + shiftAllowance; // 計算總月薪
+      let hourlyRate = totalSalary / 30 / 8; // 計算經常性時薪
+      let overtimePay = hourlyRate * overtimeRate; // 計算加班費
+
+      // 顯示結果
+      document.getElementById('result').innerText = "每小時加班費: " + overtimePay.toFixed(2) + " 元";
+
+      // 顯示警告訊息
+      if (overtimePay > 190) {
+        document.getElementById('warning').style.display = 'block'; // 顯示警告訊息
+      } else {
+        document.getElementById('warning').style.display = 'none'; // 隱藏警告訊息
+      }
+    }
+  </script>
+</body>
+</html>
